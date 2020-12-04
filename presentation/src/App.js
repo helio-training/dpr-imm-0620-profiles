@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import bcryptjs from 'bcryptjs';
 import './App.css';
 import { getEmail, setEmail, removeEmail, setLocalStorageValue } from './config/local';
 
-const salt = bcryptjs.genSaltSync(12);
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [email, setStateEmail] = useState(getEmail());
@@ -23,7 +22,7 @@ function App() {
     }
     // console.log(bcryptjs.hashSync(password, salt))
     const body = { email, password }
-    fetch('http://localhost:5000/users/login', {
+    fetch(`${API_URL}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,6 +33,11 @@ function App() {
         return response.json();
       })
       .then(data => console.log(data))
+      .then(() => { 
+        const empty = ''
+        remind ? setEmail(email): setEmail(empty); 
+        setPassword(empty);
+      })
   }
   return (
     <div className="App">
@@ -47,6 +51,7 @@ function App() {
         <input
           type="password"
           placeholder="Password"
+          value={password}
           onChange={({ target }) => {
             setPassword(target.value)
           }}

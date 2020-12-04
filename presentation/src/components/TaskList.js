@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { getLocalStorageValue } from '../config/local';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
     const [msg, setMsg] = useState('');
     const loadTasks = () => {
         const token = getLocalStorageValue('auth');
         if(token){
-            fetch('http://localhost:5000/users/tasks', {
+            fetch(`${API_URL}/users/tasks`, {
                 headers: {
                     'auth': token
                 }

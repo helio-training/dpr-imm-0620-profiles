@@ -92,9 +92,9 @@ router.get('/tasks', async function(req, res){
 
 router.post('/login', async function(req, res) {
   const body = req.body;
-  const foundUser = users.filter((user)=> {
+  const foundUser = users.find((user)=> {
     return user.email === body.email
-  })[0]
+  })
   if(foundUser){
     if(foundUser.password === body.password){
       const token = await jwt.sign({ id: foundUser.id, role: foundUser.role }, JWT_KEY);
